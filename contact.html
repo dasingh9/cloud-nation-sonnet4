@@ -63,7 +63,7 @@
                     <h3>Get In Touch</h3>
                     <p>Ready to start your next project? We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
                     
-                    <div class="info-item">
+                    <!--div class="info-item">
                         <div class="info-icon">
                             <i class="fas fa-map-marker-alt"></i>
                         </div>
@@ -71,7 +71,7 @@
                             <h4>Location</h4>
                             <p>Auckland, New Zealand</p>
                         </div>
-                    </div>
+                    </div-->
 
                     <div class="info-item">
                         <div class="info-icon">
@@ -107,7 +107,7 @@
                 <!-- Contact Form -->
                 <div class="contact-form" data-aos="fade-left">
                     <h3>Send Us a Message</h3>
-                    <form id="contact-form">
+                    <form id="contact-form" data-google-script-url="https://script.google.com/macros/s/AKfycbyNs3XGh-PScFCcqXUvriyLzRUNmOozYQ2PBp4waXPrncUxrJEui95OPcjuA45xjjq0/exec">
                         <div class="form-group">
                             <label for="name">Full Name *</label>
                             <input type="text" id="name" name="name" required>
@@ -136,8 +136,11 @@
                                 <option value="custom-software">Custom Software Development</option>
                                 <option value="mobile-apps">Mobile App Development</option>
                                 <option value="system-integration">System Integration</option>
+                                <option value="ai-chatbot-or-agent">AI Chatbot / Agent Development</option>
                                 <option value="website-deployment">Website Deployment</option>
                                 <option value="payment-integration">Payment Integration</option>
+                                <option value="email-setup">Business Email Setup</option>
+                                <option value="marketing-design">Marketing Design & Print Materials</option>
                                 <option value="consultation">General Consultation</option>
                             </select>
                         </div>
@@ -146,6 +149,7 @@
                             <label for="budget">Project Budget</label>
                             <select id="budget" name="budget">
                                 <option value="">Select budget range</option>
+                                <option value="1k-5k">$1,000 - $5,000</option>
                                 <option value="5k-15k">$5,000 - $15,000</option>
                                 <option value="15k-30k">$15,000 - $30,000</option>
                                 <option value="30k-50k">$30,000 - $50,000</option>
@@ -193,7 +197,7 @@
             <div class="faq-grid">
                 <div class="faq-item" data-aos="fade-up">
                     <h4>How long does it take to develop a website?</h4>
-                    <p>The timeline depends on the complexity and requirements. A simple website typically takes 2-4 weeks, while complex applications can take 2-6 months. We'll provide a detailed timeline during our consultation.</p>
+                    <p>The timeline depends on the complexity and requirements. A simple website typically takes 1-4 weeks, while complex applications can take 2-6 months. We'll provide a detailed timeline during our consultation.</p>
                 </div>
                 <div class="faq-item" data-aos="fade-up" data-aos-delay="100">
                     <h4>Do you provide ongoing support and maintenance?</h4>
@@ -201,7 +205,7 @@
                 </div>
                 <div class="faq-item" data-aos="fade-up" data-aos-delay="200">
                     <h4>What technologies do you specialize in?</h4>
-                    <p>We work with modern technologies including React, Node.js, .NET, mobile development frameworks, cloud platforms like AWS and Azure, and various databases.</p>
+                    <p>We work with modern technologies including React, Next.js, Node.js, .NET, mobile development frameworks, cloud platforms like AWS and Azure, and various databases.</p>
                 </div>
                 <div class="faq-item" data-aos="fade-up" data-aos-delay="300">
                     <h4>Can you work with our existing systems?</h4>
