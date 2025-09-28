@@ -191,18 +191,60 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Form handling (if contact form exists)
+    // Contact form handling with Google Apps Script integration
     const contactForm = document.getElementById('contact-form');
     if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
+        contactForm.addEventListener('submit', async function(e) {
             e.preventDefault();
+            
+            // Get Google Apps Script URL from data attribute
+            const googleScriptUrl = this.dataset.googleScriptUrl;
+            
+            if (!googleScriptUrl) {
+                showNotification(`Sorry, the form is temporarily unavailable at the moment. Please contact us directly at hello@cloudnation.co.nz`, 'error');
+                return;
+            }
+            
+            // Validate required fields
+            const requiredFields = ['name', 'email', 'message'];
+            let isValid = true;
+            const errors = [];
+            
+            requiredFields.forEach(field => {
+                const input = this.querySelector(`[name="${field}"]`);
+                if (!input.value.trim()) {
+                    isValid = false;
+                    errors.push(`${field.charAt(0).toUpperCase() + field.slice(1)} is required`);
+                    input.classList.add('error');
+                } else {
+                    input.classList.remove('error');
+                }
+            });
+            
+            // Validate email format
+            const emailInput = this.querySelector('[name="email"]');
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (emailInput.value && !emailPattern.test(emailInput.value)) {
+                isValid = false;
+                errors.push('Please enter a valid email address');
+                emailInput.classList.add('error');
+            }
+            
+            if (!isValid) {
+                showNotification(errors.join('. '), 'error');
+                return;
+            }
             
             // Get form data
             const formData = new FormData(this);
             const formObject = {};
             formData.forEach((value, key) => {
-                formObject[key] = value;
+                formObject[key] = value.trim();
             });
+            
+            // Add timestamp and source
+            formObject.timestamp = new Date().toISOString();
+            formObject.source = 'Cloud Nation Website Contact Form';
             
             // Show loading state
             const submitBtn = this.querySelector('button[type="submit"]');
@@ -210,18 +252,111 @@ document.addEventListener('DOMContentLoaded', function() {
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
             submitBtn.disabled = true;
             
-            // Simulate form submission (replace with actual API call)
-            setTimeout(() => {
-                // Reset form
-                this.reset();
+            try {
+                // Create FormData object (avoids CORS preflight issues)
+                const submitFormData = new FormData();
+                Object.keys(formObject).forEach(key => {
+                    submitFormData.append(key, formObject[key]);
+                });
                 
-                // Reset button
+                // Submit to Google Apps Script using FormData
+                const response = await fetch(googleScriptUrl, {
+                    method: 'POST',
+                    body: submitFormData
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                // Get response text first to debug
+                const responseText = await response.text();
+                console.log('Google Apps Script response:', responseText);
+                
+                let result;
+                try {
+                    result = JSON.parse(responseText);
+                } catch (parseError) {
+                    console.error('Failed to parse JSON response:', parseError);
+                    console.log('Raw response:', responseText);
+                    
+                    // Check if response contains success indicators
+                    if (responseText.includes('success') || responseText.includes('submitted')) {
+                        result = { status: 'success', message: 'Form submitted successfully!' };
+                    } else {
+                        throw new Error('Invalid response format from server');
+                    }
+                }
+                
+                if (result.status === 'success') {
+                    // Reset form
+                    this.reset();
+                    
+                    // Show success message
+                    showNotification('Thank you! Your message has been sent successfully. We\'ll get back to you within 24 hours.', 'success');
+                    
+                    // Optional: Track form submission for analytics
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'form_submit', {
+                            'form_name': 'contact_form',
+                            'service_type': formObject.service || 'not_specified'
+                        });
+                    }
+                } else {
+                    throw new Error(result.message || 'Submission failed');
+                }
+                
+            } catch (error) {
+                console.error('Form submission error:', error);
+                
+                let errorMessage = 'Sorry, there was an error sending your message. ';
+                
+                if (error.message.includes('HTTP error')) {
+                    errorMessage += 'Server error occurred. Please try again in a few minutes.';
+                } else if (error.message.includes('fetch') || error.message.includes('network')) {
+                    errorMessage += 'Please check your internet connection and try again.';
+                } else if (error.message.includes('CORS')) {
+                    errorMessage += 'Please try again in a few moments.';
+                } else if (error.message.includes('Invalid response')) {
+                    errorMessage += 'Server configuration issue. Please email us directly at hello@cloudnation.co.nz';
+                } else {
+                    errorMessage += 'Please try emailing us directly at hello@cloudnation.co.nz';
+                }
+                
+                showNotification(errorMessage, 'error');
+            } finally {
+                // Reset button state
                 submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
+            }
+        });
+        
+        // Real-time validation feedback
+        const formInputs = contactForm.querySelectorAll('input, select, textarea');
+        formInputs.forEach(input => {
+            input.addEventListener('blur', function() {
+                if (this.hasAttribute('required') && !this.value.trim()) {
+                    this.classList.add('error');
+                } else {
+                    this.classList.remove('error');
+                }
                 
-                // Show success message
-                showNotification('Message sent successfully! We\'ll get back to you soon.', 'success');
-            }, 2000);
+                // Email validation on blur
+                if (this.type === 'email' && this.value) {
+                    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailPattern.test(this.value)) {
+                        this.classList.add('error');
+                    } else {
+                        this.classList.remove('error');
+                    }
+                }
+            });
+            
+            input.addEventListener('input', function() {
+                if (this.classList.contains('error') && this.value.trim()) {
+                    this.classList.remove('error');
+                }
+            });
         });
     }
 
