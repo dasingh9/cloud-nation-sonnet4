@@ -1124,6 +1124,7 @@ p {
     align-items: center;
     margin-bottom: 4rem;
     position: relative;
+    min-height: 120px;
 }
 
 .timeline-item:nth-child(even) {
@@ -1131,7 +1132,7 @@ p {
 }
 
 .timeline-item:nth-child(even) .timeline-content {
-    text-align: right;
+    text-align: center;
 }
 
 .timeline-icon {
@@ -1146,17 +1147,21 @@ p {
     color: var(--white);
     position: absolute;
     left: 50%;
-    transform: translateX(-50%);
+    top: 0;
+    transform: translate(-50%, -50%);
     z-index: 2;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 }
 
 .timeline-content {
     flex: 1;
-    padding: 2rem;
+    padding: 3rem 2rem 2rem 2rem;
     background: var(--bg-light);
     border-radius: 15px;
-    margin: 0 3rem;
+    margin: 0 5rem;
     box-shadow: var(--shadow);
+    position: relative;
+    text-align: center;
 }
 
 .timeline-content h4 {
@@ -1194,7 +1199,9 @@ p {
 
 .choose-feature {
     display: flex;
-    align-items: flex-start;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
     gap: 1.5rem;
     padding: 2rem;
     background: var(--white);
@@ -1219,6 +1226,10 @@ p {
     font-size: 1.5rem;
     color: var(--white);
     flex-shrink: 0;
+}
+
+.choose-feature .feature-content {
+    text-align: center;
 }
 
 .choose-feature .feature-content h4 {
@@ -2154,7 +2165,7 @@ p {
     }
     
     .timeline-item:nth-child(even) .timeline-content {
-        text-align: left;
+        text-align: center;
     }
     
     .timeline-icon {
