@@ -762,21 +762,42 @@ p {
     transform: translateY(-2px);
 }
 
-.contact-info .contact-item {
+.footer .contact-info {
+    background: transparent !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+}
+
+.footer .contact-info .contact-item {
     display: flex;
     align-items: center;
     gap: 0.75rem;
     margin-bottom: 1rem;
     color: rgba(255, 255, 255, 0.8);
+    background: transparent !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
 }
 
-.contact-info .contact-item a {
+.footer .contact-info .contact-item a {
     color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
     transition: var(--transition);
 }
 
-.contact-info .contact-item a:hover {
+.footer .contact-info .contact-item a:hover {
+    color: var(--white);
+}
+
+.footer .contact-info .contact-item i {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1rem;
+    width: 20px;
+    text-align: center;
+}
+
+.footer .contact-info .contact-item:hover i {
     color: var(--white);
 }
 
