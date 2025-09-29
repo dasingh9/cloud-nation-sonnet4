@@ -2307,6 +2307,11 @@ p {
     margin-top: 3rem;
 }
 
+.tech-cta {
+    text-align: center;
+    margin-top: 3rem;
+}
+
 /* Live Client Websites */
 .live-websites {
     padding: 6rem 0;
