@@ -157,65 +157,135 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Typing animation for hero text - IMPROVED VERSION
+    // Advanced cycling typewriter animation for hero text
     const heroTitle = document.querySelector('.hero-title');
     if (heroTitle) {
-        // Store the original HTML structure
         const line1 = heroTitle.querySelector('.line1');
         const line2 = heroTitle.querySelector('.line2');
         
         if (line1 && line2) {
-            const text1 = line1.textContent;
-            const text2 = line2.textContent;
+            // Define customer-centric messages to cycle through
+            const messages = [
+                {
+                    line1: "Software Solutions",
+                    line2: "for Your Business"
+                },
+                {
+                    line1: "Grow Your Revenue",
+                    line2: "with Smart Technology"
+                },
+                {
+                    line1: "Save Time & Money",
+                    line2: "with Automation"
+                },
+                {
+                    line1: "Delight Your Customers",
+                    line2: "with AI Chatbots"
+                },
+                {
+                    line1: "Scale Your Business",
+                    line2: "with Custom Software"
+                },
+                {
+                    line1: "Get More Leads",
+                    line2: "with Modern Websites"
+                }
+            ];
             
-            // Clear the text content but keep the HTML structure
+            let currentMessageIndex = 0;
+            let isDeleting = false;
+            let currentLine = 1;
+            let charIndex = 0;
+            
+            const typeSpeed = 100;
+            const deleteSpeed = 50;
+            const pauseTime = 2500; // Pause before deleting
+            const nextMessagePause = 500; // Pause before next message
+            
+            // Clear initial content
             line1.textContent = '';
             line2.textContent = '';
-            
-            // Make sure no cursors are showing initially
             line1.classList.remove('typing');
             line2.classList.remove('typing');
             
-            heroTitle.style.opacity = '1';
-            
-            let i = 0;
-            let currentLine = 1;
-            
-            const typeWriter = () => {
-                if (currentLine === 1) {
-                    // Show cursor only on line 1
-                    line1.classList.add('typing');
-                    line2.classList.remove('typing');
-                    
-                    if (i < text1.length) {
-                        line1.textContent += text1.charAt(i);
-                        i++;
-                        setTimeout(typeWriter, 80);
+            function typeWriter() {
+                const currentMessage = messages[currentMessageIndex];
+                const currentText = currentLine === 1 ? currentMessage.line1 : currentMessage.line2;
+                const currentElement = currentLine === 1 ? line1 : line2;
+                
+                if (!isDeleting) {
+                    // Typing phase
+                    if (currentLine === 1) {
+                        line1.classList.add('typing');
+                        line2.classList.remove('typing');
                     } else {
-                        // Remove cursor from line 1 and start line 2
                         line1.classList.remove('typing');
-                        currentLine = 2;
-                        i = 0;
-                        setTimeout(typeWriter, 300); // Pause between lines
+                        line2.classList.add('typing');
                     }
-                } else if (currentLine === 2) {
-                    // Show cursor only on line 2
-                    line1.classList.remove('typing');
-                    line2.classList.add('typing');
                     
-                    if (i < text2.length) {
-                        line2.textContent += text2.charAt(i);
-                        i++;
-                        setTimeout(typeWriter, 80);
+                    if (charIndex < currentText.length) {
+                        currentElement.textContent = currentText.slice(0, charIndex + 1);
+                        charIndex++;
+                        setTimeout(typeWriter, typeSpeed);
                     } else {
-                        // Animation complete, remove all cursors
+                        // Finished typing current line
+                        if (currentLine === 1) {
+                            // Move to line 2
+                            currentLine = 2;
+                            charIndex = 0;
+                            setTimeout(typeWriter, 300);
+                        } else {
+                            // Finished both lines, pause then start deleting
+                            line2.classList.remove('typing');
+                            setTimeout(() => {
+                                isDeleting = true;
+                                currentLine = 2; // Start deleting from line 2
+                                typeWriter();
+                            }, pauseTime);
+                        }
+                    }
+                } else {
+                    // Deleting phase
+                    const currentElement = currentLine === 2 ? line2 : line1;
+                    const currentText = currentLine === 2 ? currentMessage.line2 : currentMessage.line1;
+                    
+                    if (currentLine === 2) {
+                        line2.classList.add('typing');
                         line1.classList.remove('typing');
+                    } else {
+                        line1.classList.add('typing');
                         line2.classList.remove('typing');
                     }
+                    
+                    if (charIndex > 0) {
+                        currentElement.textContent = currentText.slice(0, charIndex - 1);
+                        charIndex--;
+                        setTimeout(typeWriter, deleteSpeed);
+                    } else {
+                        // Finished deleting current line
+                        if (currentLine === 2) {
+                            // Move to deleting line 1
+                            currentLine = 1;
+                            charIndex = currentMessage.line1.length;
+                            setTimeout(typeWriter, 100);
+                        } else {
+                            // Finished deleting both lines, move to next message
+                            line1.classList.remove('typing');
+                            line2.classList.remove('typing');
+                            
+                            currentMessageIndex = (currentMessageIndex + 1) % messages.length;
+                            isDeleting = false;
+                            currentLine = 1;
+                            charIndex = 0;
+                            
+                            setTimeout(typeWriter, nextMessagePause);
+                        }
+                    }
                 }
-            };
+            }
             
-            // Start typing animation after a short delay
+            // Start the animation
+            heroTitle.style.opacity = '1';
             setTimeout(typeWriter, 800);
         }
     }
