@@ -102,6 +102,21 @@ p {
     background-clip: text;
 }
 
+.hero-title.gradient-text {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-gradient-text {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+}
+
 /* Buttons */
 .btn {
     display: inline-flex;
@@ -340,6 +355,33 @@ p {
 .hero-title {
     margin-bottom: 2rem;
     line-height: 1.1;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-title .line1,
+.hero-title .line2 {
+    display: block;
+}
+
+/* Typewriter cursor effect - Only show cursor when actively typing */
+.hero-title .line1.typing::after,
+.hero-title .line2.typing::after {
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 1.1em;
+    background-color: #667eea;
+    margin-left: 2px;
+    animation: blink 1s infinite;
+    opacity: 1;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
 }
 
 .hero-subtitle {
@@ -604,6 +646,58 @@ p {
 .stat-label {
     color: var(--text-secondary);
     font-weight: 500;
+}
+
+/* Guarantees Container */
+.guarantees-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.guarantee-item {
+    display: flex;
+    align-items: center;
+    padding: 2rem;
+    background: var(--white);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    gap: 1rem;
+}
+
+.guarantee-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+}
+
+.guarantee-icon {
+    width: 60px;
+    height: 60px;
+    background: var(--gradient-primary);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.guarantee-icon i {
+    color: var(--white);
+    font-size: 1.5rem;
+}
+
+.guarantee-content h4 {
+    margin: 0 0 0.25rem 0;
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.guarantee-content p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
 }
 
 /* Technology Stack */
@@ -914,7 +1008,8 @@ p {
         gap: 2rem;
     }
 
-    .stats-container {
+    .stats-container,
+    .guarantees-container {
         grid-template-columns: 1fr 1fr;
     }
 
@@ -979,7 +1074,8 @@ p {
         word-wrap: break-word;
     }
 
-    .stats-container {
+    .stats-container,
+    .guarantees-container {
         grid-template-columns: 1fr;
     }
     
@@ -989,8 +1085,15 @@ p {
     }
 
     .service-card,
-    .stat-item {
+    .stat-item,
+    .guarantee-item {
         padding: 1.5rem;
+    }
+
+    .guarantee-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
     }
 
     .footer-content {
@@ -2197,6 +2300,11 @@ p {
 .rating i {
     color: #ffd700;
     font-size: 1rem;
+}
+
+.testimonials-cta {
+    text-align: center;
+    margin-top: 3rem;
 }
 
 /* Live Client Websites */

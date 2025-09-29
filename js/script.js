@@ -157,24 +157,67 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Typing animation for hero text
+    // Typing animation for hero text - IMPROVED VERSION
     const heroTitle = document.querySelector('.hero-title');
     if (heroTitle) {
-        const text = heroTitle.innerHTML;
-        heroTitle.innerHTML = '';
-        heroTitle.style.opacity = '1';
+        // Store the original HTML structure
+        const line1 = heroTitle.querySelector('.line1');
+        const line2 = heroTitle.querySelector('.line2');
         
-        let i = 0;
-        const typeWriter = () => {
-            if (i < text.length) {
-                heroTitle.innerHTML += text.charAt(i);
-                i++;
-                setTimeout(typeWriter, 50);
-            }
-        };
-        
-        // Start typing animation after a short delay
-        setTimeout(typeWriter, 500);
+        if (line1 && line2) {
+            const text1 = line1.textContent;
+            const text2 = line2.textContent;
+            
+            // Clear the text content but keep the HTML structure
+            line1.textContent = '';
+            line2.textContent = '';
+            
+            // Make sure no cursors are showing initially
+            line1.classList.remove('typing');
+            line2.classList.remove('typing');
+            
+            heroTitle.style.opacity = '1';
+            
+            let i = 0;
+            let currentLine = 1;
+            
+            const typeWriter = () => {
+                if (currentLine === 1) {
+                    // Show cursor only on line 1
+                    line1.classList.add('typing');
+                    line2.classList.remove('typing');
+                    
+                    if (i < text1.length) {
+                        line1.textContent += text1.charAt(i);
+                        i++;
+                        setTimeout(typeWriter, 80);
+                    } else {
+                        // Remove cursor from line 1 and start line 2
+                        line1.classList.remove('typing');
+                        currentLine = 2;
+                        i = 0;
+                        setTimeout(typeWriter, 300); // Pause between lines
+                    }
+                } else if (currentLine === 2) {
+                    // Show cursor only on line 2
+                    line1.classList.remove('typing');
+                    line2.classList.add('typing');
+                    
+                    if (i < text2.length) {
+                        line2.textContent += text2.charAt(i);
+                        i++;
+                        setTimeout(typeWriter, 80);
+                    } else {
+                        // Animation complete, remove all cursors
+                        line1.classList.remove('typing');
+                        line2.classList.remove('typing');
+                    }
+                }
+            };
+            
+            // Start typing animation after a short delay
+            setTimeout(typeWriter, 800);
+        }
     }
 
     // Parallax effect for floating shapes
