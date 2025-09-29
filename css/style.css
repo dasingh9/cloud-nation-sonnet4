@@ -17,6 +17,20 @@ body {
     overflow-x: hidden;
 }
 
+html {
+    overflow-x: hidden;
+}
+
+/* Ensure all elements stay within viewport */
+*, *::before, *::after {
+    max-width: 100%;
+}
+
+/* Allow specific elements to exceed if needed */
+.container, .nav-container, section, .page-header {
+    max-width: none;
+}
+
 /* CSS Variables */
 :root {
     --primary-color: #667eea;
@@ -598,10 +612,34 @@ p {
     background: var(--white);
 }
 
+/* Wider container for tech stack on large screens */
+.tech-stack .container {
+    max-width: 1400px;
+}
+
 .tech-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 2rem;
+}
+
+/* Additional spacing for very large screens */
+@media (min-width: 1600px) {
+    .tech-stack .container {
+        max-width: 1600px;
+    }
+    
+    .tech-grid {
+        gap: 3rem;
+    }
+}
+
+/* Responsive breakpoints for tech-grid */
+@media (max-width: 1024px) {
+    .tech-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+    }
 }
 
 .tech-item {
@@ -609,11 +647,26 @@ p {
     flex-direction: column;
     align-items: center;
     gap: 1rem;
-    padding: 2rem 1rem;
+    padding: 2.5rem 1.5rem;
     background: var(--bg-light);
     border-radius: var(--border-radius);
     transition: var(--transition);
     text-align: center;
+    min-height: 160px;
+    justify-content: center;
+}
+
+/* Enhanced styling for large screens */
+@media (min-width: 1200px) {
+    .tech-item {
+        padding: 3rem 2rem;
+        min-height: 180px;
+    }
+    
+    .tech-item span {
+        font-size: 1.1rem;
+        font-weight: 500;
+    }
 }
 
 .tech-item:hover {
@@ -626,6 +679,13 @@ p {
     font-size: 3rem;
     color: var(--primary-color);
     transition: var(--transition);
+}
+
+/* Larger icons for big screens */
+@media (min-width: 1200px) {
+    .tech-icon {
+        font-size: 3.5rem;
+    }
 }
 
 .tech-item:hover .tech-icon {
@@ -872,7 +932,8 @@ p {
     }
 
     .tech-grid {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
     }
 }
 
@@ -888,9 +949,43 @@ p {
     .hero-title {
         line-height: 1.2;
     }
+    
+    /* Fix breadcrumb overflow on small devices */
+    .breadcrumb {
+        flex-wrap: wrap;
+        gap: 0.3rem;
+        justify-content: center;
+        font-size: 0.9rem;
+        max-width: 100%;
+        overflow: visible;
+    }
+    
+    .header-content {
+        max-width: 100%;
+        padding: 0 1rem;
+        box-sizing: border-box;
+    }
+    
+    .header-content h1 {
+        font-size: 1.8rem;
+        line-height: 1.2;
+        word-wrap: break-word;
+        hyphens: auto;
+    }
+    
+    .header-content p {
+        font-size: 1rem;
+        line-height: 1.4;
+        word-wrap: break-word;
+    }
 
     .stats-container {
         grid-template-columns: 1fr;
+    }
+    
+    .tech-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
     }
 
     .service-card,
@@ -2549,10 +2644,30 @@ p {
 @media (max-width: 768px) {
     .page-header {
         padding: 6rem 0 3rem;
+        overflow-x: hidden;
+    }
+    
+    .header-content {
+        max-width: 100%;
+        padding: 4rem 0 1rem;
+        box-sizing: border-box;
     }
     
     .header-content h1 {
         font-size: 2.5rem;
+        word-wrap: break-word;
+        hyphens: auto;
+    }
+    
+    .header-content p {
+        word-wrap: break-word;
+        hyphens: auto;
+    }
+    
+    .breadcrumb {
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        max-width: 100%;
     }
     
     .intro-wrapper,
@@ -2562,6 +2677,24 @@ p {
     .overview-content {
         grid-template-columns: 1fr;
         gap: 2rem;
+    }
+    
+    /* Fix contact page container overflow */
+    .contact-info,
+    .contact-form {
+        margin: 0;
+        padding: 2rem 1.5rem;
+        max-width: 100%;
+        box-sizing: border-box;
+        width: 100%;
+    }
+    
+    .contact-content {
+        padding: 4rem 0;
+    }
+    
+    .contact-content .container {
+        padding: 0 1rem;
     }
     
     .service-item {
@@ -2706,6 +2839,114 @@ p {
 }
 
 @media (max-width: 480px) {
+    /* Additional contact page fixes for very small devices */
+    .contact-info,
+    .contact-form {
+        padding: 1.5rem 1rem !important;
+        margin: 0 !important;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .contact-content {
+        padding: 3rem 0;
+    }
+    
+    .contact-content .container {
+        padding: 0 0.5rem;
+    }
+    
+    .contact-wrapper {
+        gap: 1.5rem;
+    }
+    
+    .info-item {
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .info-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+        flex-shrink: 0;
+    }
+    
+    .info-text {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .info-text h4 {
+        font-size: 1rem;
+        margin-bottom: 0.3rem;
+    }
+    
+    .info-text p,
+    .info-text a {
+        font-size: 0.9rem;
+        word-wrap: break-word;
+    }
+    
+    /* Form elements mobile fixes */
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        padding: 0.8rem 1rem;
+        font-size: 0.9rem;
+        border-radius: 8px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .form-group label {
+        font-size: 0.9rem;
+        margin-bottom: 0.4rem;
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-submit .btn {
+        width: 100%;
+        padding: 1rem;
+        font-size: 1rem;
+    }
+    
+    /* Additional breadcrumb fixes for very small devices */
+    .page-header {
+        padding: 5rem 0 2.5rem;
+    }
+    
+    .header-content h1 {
+        font-size: 1.6rem !important;
+        margin-bottom: 0.8rem;
+    }
+    
+    .header-content p {
+        font-size: 0.9rem !important;
+        margin-bottom: 1.5rem;
+        line-height: 1.3;
+    }
+    
+    .breadcrumb {
+        font-size: 0.8rem !important;
+        gap: 0.2rem !important;
+        margin: 0 auto;
+        text-align: center;
+        display: block;
+        width: 100%;
+    }
+    
+    .breadcrumb > * {
+        display: inline;
+        margin: 0 0.1rem;
+    }
+    
     .tech-stats {
         flex-direction: column;
     }
