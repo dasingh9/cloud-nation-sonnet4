@@ -2,12 +2,20 @@ User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://cloudnation.co.nz/sitemap.xml
+Sitemap: https://www.cloudnation.co.nz/sitemap.xml
 
-# Block access to sensitive files/directories
-Disallow: /js/
-Disallow: /css/
-Disallow: *.js$
+# Allow important assets for SEO
+Allow: /css/
+Allow: /js/
+Allow: /images/
+
+# Block unnecessary files
+Disallow: /.git/
+Disallow: /node_modules/
+Disallow: *.md$
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
 Disallow: *.css$
 
 # Allow important files
